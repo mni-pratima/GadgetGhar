@@ -1,0 +1,299 @@
+{% extends 'ecom/homebase.html' %}
+{% load static %}
+
+{# Navbar block - handles both logged-in and guest users #}
+
+
+
+
+
+{% block navbar %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'homepage' %}">Shop</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'shop' %}">Shop</a>
+        </li>
+
+        {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'my_order' %}">My Orders</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              {{ request.user.username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'customerlogin' %}">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+          </li>
+        {% endif %} 
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endblock navbar%}
+
+
+
+{% block content %}
+
+{% comment %} <style>
+  html, body {
+    overflow-y: auto;
+    height: 100%;
+  }
+
+  .price-filter-form {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    background-color: #f8f9fa;
+  }
+
+  .price-filter-form p {
+    font-size: 14px;
+    margin: 10px 0;
+  }
+
+  input[type="range"]::-webkit-slider-thumb,
+  input[type="range"]::-moz-range-thumb {
+    background-color: #6f42c1;
+    border: none;
+  }
+
+  .card-img-top {
+    object-fit: contain;
+    height: 130px; /* ✅ Reduced height */
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
+
+  .form-inline select {
+    width: auto;
+    padding: 6px;
+    font-size: 14px;
+  }
+
+  .recently-viewed img {
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 4px;
+  }
+
+  .recently-viewed li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #333;
+  }
+
+  .recently-viewed li a:hover {
+    text-decoration: underline;
+  }
+
+  .product-wrapper {
+    padding: 12px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    transition: 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    box-shadow: 0 0 5px rgba(0,0,0,0.05);
+  }
+
+  .product-wrapper:hover {
+    box-shadow: 0 0 12px rgba(0,0,0,0.15);
+  }
+
+  .product-wrapper h6 {
+    font-size: 16px;
+    margin: 8px 0 4px;
+    font-weight: 600;
+  }
+
+  .product-wrapper p {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  .product-wrapper a.btn {
+    margin-top: auto;
+    font-size: 14px;
+    padding: 6px 14px;
+    border-radius: 20px;
+  }
+
+  .fw-bold {
+    font-weight: 600;
+  }
+
+  .mt-5 {
+    margin-top: 3rem !important;
+  }
+
+  /* Responsive fix for product grid */
+  @media (min-width: 768px) {
+    .col-md-4 {
+      display: flex;
+    }
+
+    .product-wrapper {
+      width: 100%;
+    }
+  }
+</style> {% endcomment %}
+
+
+{% comment %} <div style="display: flex; justify-content: center; align-items: center; height: 100px;">
+  <button style="
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+  " 
+  onmouseover="this.style.backgroundColor='#218838'" 
+  onmouseout="this.style.backgroundColor='#28a745'">
+Back To Homepage
+</button>
+</div> {% endcomment %}
+
+<nav style="background-color: #f8f9fa; padding: 10px 0; border-bottom: 1px solid #ccc;">
+  <div style="max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 20px;">
+    <a href="#" style="font-size: 24px; text-decoration: none; color: #000; font-weight: bold;">Shop</a>
+    <ul style="list-style: none; display: flex; gap: 20px; margin: 0; padding: 0;">
+      <li><a href="#" style="text-decoration: none; color: #000;">Shop</a></li>
+      <li><a href="#" style="text-decoration: none; color: #000;">My Orders</a></li>
+      <li><a href="#" style="text-decoration: none; color: #000;">Profile</a></li>
+      <li><a href="#" style="text-decoration: none; color: #000;">Logout</a></li>
+      <li><a href="#" style="text-decoration: none; color: #000;">Login</a></li>
+      <li><a href="#" style="text-decoration: none; color: #000;">Register</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+</div>
+
+
+<div class="container mt-5">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-lg-3 mb-4">
+      <form method="get" class="price-filter-form text-center">
+        <h5 class="fw-bold">Filter by price</h5>
+        <input type="range" id="min_price" name="min_price" min="0" max="10000" step="100" value="{{ request.GET.min_price|default:0 }}" oninput="updateMinPrice(this.value)">
+        <input type="range" id="max_price" name="max_price" min="0" max="10000" step="100" value="{{ request.GET.max_price|default:10000 }}" oninput="updateMaxPrice(this.value)">
+        <p>Price: Rs <span id="min_price_val">{{ request.GET.min_price|default:0 }}</span> — Rs <span id="max_price_val">{{ request.GET.max_price|default:10000 }}</span></p>
+        <button type="submit" class="btn btn-sm btn-primary px-4 rounded-pill">Filter</button>
+      </form>
+
+      <hr>
+
+      
+      <h6>Recently Viewed Products</h6>
+      <ul class="list-unstyled recently-viewed">
+        {% for item in recently_viewed_products %}
+          <li class="mb-2">
+            <a href="{% url 'product-detail' item.id %}">
+              <img src="{{ item.product_image.url }}" alt="{{ item.name }}">
+              <div>
+                <span>{{ item.name }}</span><br>
+                <small>Rs {{ item.price }}</small>
+              </div>
+            </a>
+          </li>
+        {% empty %}
+          <li><small>No products viewed yet.</small></li>
+        {% endfor %}
+      </ul>
+
+      <hr>
+      <h6>Sort Products</h6>
+      <form method="get">
+        {% if min_price %}
+          <input type="hidden" name="min_price" value="{{ min_price }}">
+        {% endif %}
+        {% if max_price %}
+          <input type="hidden" name="max_price" value="{{ max_price }}">
+        {% endif %}
+        <select name="sort" onchange="this.form.submit()" class="form-control">
+          <option value="">Default sorting</option>
+          <option value="latest" {% if sort == 'latest' %}selected{% endif %}>Latest</option>
+          <option value="low_to_high" {% if sort == 'low_to_high' %}selected{% endif %}>Price: Low to High</option>
+          <option value="high_to_low" {% if sort == 'high_to_low' %}selected{% endif %}>Price: High to Low</option>
+        </select>
+      </form>
+
+    </div>
+
+    <!-- Main Products -->
+    <div class="col-lg-9">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold">Products</h4>
+      </div>
+
+      <p class="text-muted">Showing {{ products|length }} of {{ total_products_count }} results</p>
+
+      <div class="row">
+        {% for p in products %}
+          <div class="col-md-4 mb-4">
+            <div class="product-wrapper text-center">
+              <a href="{% url 'product-detail' p.id %}">
+                <img src="{{ p.product_image.url }}" alt="{{ p.name }}" class="card-img-top mb-2">
+              </a>
+              <h6><a href="{% url 'product-detail' p.id %}" class="text-decoration-none text-dark">{{ p.name }}</a></h6>
+              <p class="text-primary fw-bold">Rs {{ p.price }}</p>
+              <a href="{% url 'add-to-cart' p.id %}" class="btn btn-sm btn-outline-primary">Add to Cart</a>
+            </div>
+          </div>
+        {% empty %}
+          <div class="col-12">
+            <p>No products found.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function updateMinPrice(val) {
+    document.getElementById('min_price_val').innerText = val;
+  }
+  function updateMaxPrice(val) {
+    document.getElementById('max_price_val').innerText = val;
+  }
+</script>
+
+{% endblock %}

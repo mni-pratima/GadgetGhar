@@ -1,0 +1,63 @@
+{% extends 'ecom/customer_base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  body {
+    background-color: #f7f7f7;
+  }
+
+  .profile-container {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+
+  .profile-pic {
+    border-radius: 10px;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .info-block {
+    margin-top: 20px;
+  }
+
+  .btn-edit {
+    background-color: #f4511e;
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    font-size: 18px;
+    border-radius: 5px;
+    transition: 0.3s;
+  }
+
+  .btn-edit:hover {
+    background-color: #d63f14;
+  }
+</style>
+
+<div class="container profile-container">
+  <div class="row justify-content-center">
+    <div class="col-md-4 text-center">
+      {% if customer.profile_pic %}
+        <img src="{{ customer.profile_pic.url }}" alt="Profile Picture" class="profile-pic">
+      {% else %}
+        <img src="{% static 'images/default-profile.png' %}" alt="Default Profile" class="profile-pic">
+      {% endif %}
+    </div>
+    <div class="col-md-6 info-block">
+      <h3>User Information</h3>
+      <p><strong>Username:</strong> {{ request.user.username }}</p>
+      <p><strong>Address:</strong> {{ customer.address }}</p>
+      <p><strong>Mobile:</strong> {{ customer.mobile }}</p>
+
+      <a href="{% url 'edit-profile' %}">
+        <button class="btn-edit mt-3">Edit Profile</button>
+      </a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

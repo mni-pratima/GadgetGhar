@@ -1,0 +1,82 @@
+{% extends 'ecom/admin_base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  .floating-button {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    z-index: 1000;
+    background-color: #353a3f;
+    color: white;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+    text-align: center;
+    line-height: 60px;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+  }
+  .floating-button:hover {
+    background-color: #0056b3;
+    color: white;
+    text-decoration: none;
+  }
+</style>
+
+<div class="container mt-5">
+  <h2 class="mb-4">
+    Manage Brands
+  
+  </h2>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <!-- Brand Form -->
+  <div class="card mb-4">
+    <div class="card-header bg-dark text-white">Add New Brand</div>
+    <div class="card-body">
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Add Brand</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Brand Table -->
+  <h4>Existing Brands</h4>
+  <table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>#</th>
+        <th>Brand Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for brand in brands %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ brand.name }}</td>
+        <td>
+          <a href="{% url 'admin_delete_brand' brand.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this brand?');">
+            <i class="fa-solid fa-trash"></i>
+          </a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="3" class="text-center">No brands added yet.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>eSewa Payment</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f6fa;
+      margin: 0;
+    }
+
+    .payment-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 80vh;
+    }
+
+    .payment-container {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #0077b6;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  {% include "ecom/customer_navbar.html" %}
+
+  <div class="payment-wrapper">
+    <div class="payment-container">
+      <h2>Redirecting to eSewa</h2>
+      <p><strong>Amount:</strong> Rs {{ total }}</p>
+
+      <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="amount" value="{{ total|add:"-10" }}">
+        <input type="hidden" name="tax_amount" value="10">
+        <input type="hidden" name="total_amount" value="{{ total }}">
+        <input type="hidden" name="transaction_uuid" value="{{ uuid }}">
+        <input type="hidden" name="product_code" value="EPAYTEST">
+        <input type="hidden" name="product_service_charge" value="0">
+        <input type="hidden" name="product_delivery_charge" value="0">
+        <input type="hidden" name="success_url" value="{{ success_url }}">
+        <input type="hidden" name="failure_url" value="{{ failure_url }}">
+
+        <input type="hidden" name="signed_field_names" value="total_amount,transaction_uuid,product_code">
+        <input type="hidden" name="signature" value="{{ signature }}">
+
+        <button type="submit">Pay with eSewa</button>
+      </form>
+    </div>
+  </div>
+
+  {% include "ecom/footer.html" %}
+</body>
+</html>

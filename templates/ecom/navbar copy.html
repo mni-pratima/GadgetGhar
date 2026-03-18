@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap 3 and jQuery -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+  <style>
+    .navbar-gg {
+      background: #6b2223;
+      border: none;
+      margin-bottom: 0;
+    }
+    .navbar-gg .navbar-brand,
+    .navbar-gg .navbar-nav > li > a {
+      color: #fff;
+    }
+    .navbar-gg .navbar-brand:hover,
+    .navbar-gg .navbar-nav > li > a:hover,
+    .navbar-gg .navbar-nav > .open > a {
+      color: #e5bc41;
+      background: transparent;
+    }
+    .cart-badge {
+      background: #fff;
+      color: #6b2223;
+      margin-left: 4px;
+    }
+    .btn-gg-yellow {
+      background: #e5bc41;
+      border-color: #e5bc41;
+      color: #000;
+    }
+    .btn-gg-yellow:hover {
+      background: #d4ac37;
+      border-color: #d4ac37;
+    }
+    body {
+      padding-top: 95px;
+    }
+    .nav-links-below-search {
+      margin-top: 5px;
+      margin-left: 15px; /* slight right shift */
+    }
+  </style>
+</head>
+<body>
+
+  
+
+{% if request.user.is_authenticated %}
+  {% include "ecom/customer_navbar.html" %}
+{% else %}
+<nav class="navbar navbar-gg navbar-fixed-top">
+  <div class="container">
+
+    <!-- ROW: Brand | Search+Links | Login/Cart -->
+    <div class="row" style="display: flex; align-items: flex-start; padding: 10px 0; flex-wrap: wrap;">
+      
+      <!-- Logo -->
+      <div class="col-sm-2 col-xs-12">
+        <a class="navbar-brand" href="/">GadgetGhar</a>
+      </div>
+
+      <!-- Search bar and links below -->
+      <div class="col-sm-6 col-xs-12">
+        <!-- Search -->
+        <form class="navbar-form" role="search" action="/search" method="get" style="margin:0;">
+          <div class="input-group" style="width: 100%;">
+            <input type="text" class="form-control" name="query" placeholder="Search for products, brands and more">
+            <span class="input-group-btn">
+              <button class="btn btn-gg-yellow" type="submit">
+                <i class="glyphicon glyphicon-search"></i>
+              </button>
+            </span>
+          </div>
+        </form>
+
+        <!-- Navigation Links just below search bar -->
+        <div class="nav-links-below-search">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                Shop <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                {% for category in categories %}
+                  {% if category.name|lower|cut:" " != "default category" %}
+                    <li><a href="/shop?category={{ category.name|urlencode }}">{{ category.name }}</a></li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </li>
+            <li><a href="/aboutus">About Us</a></li>
+            <li><a href="/contactus">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Login & Cart -->
+      <div class="col-sm-4 col-xs-12 text-right">
+        <ul class="nav navbar-nav navbar-right" style="margin: 0;">
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="margin-top: 5px;">
+              Login & Sign Up <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="/customerlogin">Customer Login</a></li>
+              <li><a href="/customersignup">Customer Sign Up</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="/adminclick">Admin Login</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="/cart" class="btn btn-gg-yellow navbar-btn" style="margin-top: 5px; margin-left: 10px;">
+              <i class="glyphicon glyphicon-shopping-cart"></i> Cart
+              <span class="badge cart-badge">{{ product_count_in_cart }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</nav>
+{% endif %}
+
+{% block content %}{% endblock %}
+</body>
+</html>

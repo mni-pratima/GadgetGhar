@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>About Us | GadgetGhar</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #f7f7f7;
+      font-size: 20px;
+      line-height: 2;
+      color: #333;
+    }
+
+    .about-container {
+      max-width: 980px;
+      margin: 70px auto;
+      padding: 40px;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.1);
+    }
+
+    .about-container h2 {
+      text-align: center;
+      font-size: 3rem;
+      margin-bottom: 35px;
+      color: #222;
+    }
+
+    .about-container p {
+      font-size: 1.35rem;
+      line-height: 2.1;
+      color: #444;
+      margin-bottom: 25px;
+    }
+
+    .section-title {
+      margin-top: 45px;
+      font-size: 1.75rem;
+      color: #111;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 10px;
+    }
+
+    .footer {
+      background-color: #1e1e1e;
+      color: white;
+      text-align: center;
+      padding: 25px 10px;
+      font-size: 1.1rem;
+      margin-top: 70px;
+    }
+
+    @media (max-width: 600px) {
+      .about-container {
+        margin: 25px 15px;
+        padding: 25px;
+      }
+
+      .about-container h2 {
+        font-size: 2.3rem;
+      }
+
+      .about-container p {
+        font-size: 1.15rem;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+      }
+
+      .footer {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  {% include "ecom/navbar.html" %}
+
+  <div class="about-container">
+    <h2>About GadgetGhar</h2>
+    <p>
+      Welcome to <strong>Gadget Ghar</strong> — your trusted destination for the latest and most reliable electronics in Nepal. From smartphones and laptops to home appliances and accessories, we offer a wide range of quality gadgets at affordable prices.
+    </p>
+
+    <p>
+      At Gadget Ghar, we believe in bridging the gap between cutting-edge technology and everyday users. With a focus on customer satisfaction, fast delivery, and top-notch after-sales support, we aim to provide a seamless shopping experience both online and offline.
+    </p>
+
+    <div class="section-title">Our Vision</div>
+    <p>
+      To become Nepal’s leading and most customer-centric electronics platform, delivering innovation and convenience to every home.
+    </p>
+
+    <div class="section-title">Our Mission</div>
+    <p>
+      &bull; Provide access to the latest electronic gadgets at the best prices.<br>
+      &bull; Ensure prompt customer service and technical support.<br>
+      &bull; Support Nepal’s digital growth through technology awareness and outreach.<br>
+      &bull; Promote trusted brands and verified products only.
+    </p>
+
+    <div class="section-title">Why Choose Us?</div>
+    <p>
+      ✔ Verified Products Only<br>
+      ✔ Competitive Pricing<br>
+      ✔ Express Delivery Services<br>
+      ✔ Friendly Support & Returns<br>
+      ✔ Both Online & Physical Store Presence
+    </p>
+  </div>
+
+  <div class="footer">
+    {% include "ecom/footer.html" %}
+  </div>
+
+</body>
+
+</html>

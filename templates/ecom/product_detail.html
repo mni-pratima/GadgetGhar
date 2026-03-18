@@ -1,0 +1,122 @@
+{% extends 'ecom/homebase.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Page-specific CSS -->
+<style>
+  /* Fix navbar overlap */
+  body {
+    padding-top: 95px !important;
+    background-color: #fff !important;
+  }
+
+  /* Image zoom effect */
+  .product-page .zoom-container {
+    overflow: hidden !important;
+    margin-top:50px;
+    border-radius: 8px !important;
+  }
+  .product-page .zoom-container img {
+    transition: transform 0.4s ease !important;
+  }
+  .product-page .zoom-container:hover img {
+    transform: scale(1.1) !important;
+  }
+
+  /* Product details on larger screens */
+  @media (min-width: 768px) {
+    .product-page .product-details {
+      border-left: 1px solid #dee2e6 !important;
+          margin-top:70px;
+
+      padding-left: 1.5rem !important;
+    }
+  }
+
+  /* Card hover effect */
+  .product-page .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  }
+  .product-page .card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.1) !important;
+  }
+</style>
+
+<div class="product-page">
+
+  <!-- Navbar -->
+  {% include "ecom/navbar.html" %}
+<span class="cart-count">{{ product_count_in_cart }}</span>
+
+  <!-- Product Section -->
+  <div class="container mt-4">
+    <div class="row">
+      <!-- Left: Product Image -->
+      <div class="col-md-6">
+        <div class="zoom-container">
+          <div class="main-image-wrapper d-flex align-items-center justify-content-center bg-light" style="height: 400px;">
+            <img src="{{ product.product_image.url }}"
+                 alt="{{ product.name }}"
+                 style="max-height: 100%; max-width: 100%; object-fit: contain;">
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Product Details -->
+      <div class="col-md-6 product-details">
+        <h2 class="mb-3">{{ product.name }}</h2>
+        <p class="text-muted h4 mb-3">Rs {{ product.price }}</p>
+
+        {% if product.stock > 0 %}
+          <p><strong>In Stock:</strong> {{ product.stock }}</p>
+          {% if product.stock <= 5 %}
+            <p class="text-danger"><strong>Hurry!</strong> Only {{ product.stock }} left in stock.</p>
+          {% endif %}
+        {% else %}
+          <p class="text-danger"><strong>Out of Stock</strong></p>
+        {% endif %}
+
+        <p class="mb-4">{{ product.description|default:"No description available." }}</p>
+
+        {% if product.stock > 0 %}
+          <a href="{% url 'add-to-cart' product.id %}" class="btn btn-primary w-100 mb-3">Add to Cart</a>
+        {% else %}
+          <button class="btn btn-secondary w-100 mb-3" disabled>Out of Stock</button>
+        {% endif %}
+
+        <p><strong>Estimated Delivery:</strong> 2-3 days</p>
+        <p><strong>Free Shipping:</strong> on orders above Rs. 2999</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- You May Also Like Section -->
+  <div class="container mt-5">
+    <h4 class="mb-4">You May Also Like</h4>
+    <div class="row">
+      {% for rec in recommended_products %}
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+          <div class="card h-100">
+            <img src="{{ rec.product_image.url }}" class="card-img-top" style="height: 180px; object-fit: contain;">
+            <div class="card-body text-center">
+              <h6 class="card-title">{{ rec.name }}</h6>
+              <p class="text-muted">Rs {{ rec.price }}</p>
+              <a href="{% url 'product-detail' rec.id %}" class="btn btn-outline-primary btn-sm">View</a>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12">
+          <p class="text-muted">No recommendations found.</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+<footer>
+    {% include "ecom/footer.html" %}
+
+</footer>

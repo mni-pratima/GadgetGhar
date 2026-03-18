@@ -1,0 +1,120 @@
+{% load static %}
+
+{% block content %}
+{% include "ecom/navbar.html" %}
+
+<style>
+  .cart-table {
+    width: 80%;
+    margin: 50px auto;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .cart-table thead {
+    background-color: #f4f4f4;
+  }
+
+  .cart-table th,
+  .cart-table td {
+    padding: 12px 20px;
+    text-align: center;
+    border: 1px solid #ddd;
+  }
+
+  .cart-table th {
+    font-weight: bold;
+    color: #333;
+  }
+
+  .cart-actions a {
+    text-decoration: none;
+    font-size: 18px;
+    margin: 0 5px;
+    color: #333;
+    transition: color 0.2s;
+  }
+
+  .cart-actions a:hover {
+    color: #007BFF;
+  }
+
+  .total-price {
+    text-align: center;
+    font-size: 22px;
+    margin-top: 30px;
+    font-weight: bold;
+  }
+
+  .checkout-btn {
+    background-color: #007BFF;
+    color: white;
+    padding: 12px 30px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+  }
+
+  .checkout-btn:hover {
+    background-color: #0056b3;
+  }
+
+  @media screen and (max-width: 768px) {
+    .cart-table {
+      width: 95%;
+      font-size: 14px;
+    }
+  }
+</style>
+
+<table class="cart-table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Quantity</th>
+      <th>Total</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for product in products %}
+    <tr>
+      <td>{{ product.name }}</td>
+      <td>Rs. {{ product.price }}</td>
+      <td>{{ product.quantity }}</td>
+      <td>Rs. {{ product.total_price }}</td>
+      <td class="cart-actions">
+        <a href="{% url 'remove-from-cart' product.id %}" title="Decrease Quantity">➖</a>
+        <a href="{% url 'increase-cart-item' product.id %}" title="Increase Quantity">➕</a>
+        <a href="{% url 'delete-from-cart' product.id %}" onclick="return confirm('Remove this item completely?')" title="Remove Item">🗑️</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="5">Your cart is empty.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="total-price">
+  Total Price: Rs. {{ total }}
+</div>
+
+<div style="text-align: center; margin-top: 20px;">
+  {% if user.is_authenticated %}
+    <a href="{% url 'customer_address' %}" class="checkout-btn">Proceed to Checkout</a>
+  {% else %}
+    <a href="{% url 'customersignup' %}" class="checkout-btn">Checkout</a>
+  {% endif %}
+</div>
+
+<br><br><br><br><br>
+{% endblock %}
+
+{% include "ecom/footer.html" %}
