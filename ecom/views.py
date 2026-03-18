@@ -1272,8 +1272,11 @@ def esewa_payment_view(request):
 
 
 
-openai.api_key = "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"  # Replace with your real key
+import environ
 
+env = environ.Env()
+# This pulls the key from your .env file automatically
+api_key = env('OPENAI_API_KEY')
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
